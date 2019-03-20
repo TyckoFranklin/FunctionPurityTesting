@@ -1,0 +1,31 @@
+{
+    "name": "FunctionPurityTesting",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "test": "jest"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "deepfreeze": "^2.0.0",
+        "lodash": "^4.17.11"
+    },
+    "jest": {
+        "verbose": true,
+        "reporters": [
+            "default",
+            ["./node_modules/jest-html-reporter", {
+                "pageTitle": "Test Report"
+            }]
+        ]
+    },
+    "devDependencies": {
+        "jest": "^24.5.0",
+        "jest-html-reporter": "^2.5.0",
+        "jest-reporter": "^1.0.1"
+    }
+}
