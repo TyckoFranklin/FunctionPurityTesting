@@ -14,12 +14,22 @@ exports.usesReference = (a, b) => {
 
 class TestingContext {
     constructor() {
-        this.contextFunction = () => 10;
-        this.usesContextReference = (a, b) => {
+        this.contextFunction = () => 0;
+        this.contextBoolean = false;
+        this.usesContextFunction = (a, b) => {
             let _this = 3; //passes the regex for this
             let $this = 3; //passes the regex for this
             let bb = a.num + b.num;
-            if (!this.contextFunction) { //fails the regex for this, but not the rebinding method of testing.
+            if (this && Object.keys(this).length !== 0 && !this.contextFunction) { //fails the regex for this, but not the rebinding method of testing.
+                bb = a.num + b.num + this.contextFunction();
+            }
+            return bb;
+        }
+        this.usesContextBoolean = (a, b) => {
+            let _this = 3; //passes the regex for this
+            let $this = 3; //passes the regex for this
+            let bb = a.num + b.num;
+            if (this && !this.contextBoolean) { //fails the regex for this, but not the rebinding method of testing.
                 bb = a.num + b.num;
             }
             return bb;

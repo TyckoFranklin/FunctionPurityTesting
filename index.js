@@ -44,7 +44,7 @@ const isPure = (fn, args, output) => {
     });
     it("Verify Function Doesn't Use References", () => {
         let localArgs = args.map(_.cloneDeep);
-        let testing = destroyLexicalScope(fn);
+        let testing = destroyContext(destroyLexicalScope(fn));
         
         expect(() => {
             testing(...localArgs);
