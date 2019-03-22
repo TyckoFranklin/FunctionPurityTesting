@@ -1,7 +1,6 @@
-
-require('dotenv').config();
 let _ = require('lodash');
 let deepFreeze = require('deepfreeze');
+
 
 const checkChangedArguments = (fn) => {
     return function comparedArguments() {
@@ -26,7 +25,6 @@ const destroyContext = (fn) => {
 
 const isPure = (fn, args, output) => {
     it("Verify Function Doesn't Modify Arguments", () => {
-        console.log(process.env.TESTING);
         let localArgs = args.map(_.cloneDeep);
         let testing = checkChangedArguments(fn)
         testing(...localArgs);

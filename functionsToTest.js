@@ -13,25 +13,19 @@ exports.usesReference = (a, b) => {
 }
 
 class TestingContext {
-    constructor(){
-        this.contextReferenceVariable= 5;
-        this.aa = ()=>10;
-        let aa = ()=>10;
-        // return this.contextReferenceVariable;
+    constructor() {
+        this.contextFunction = () => 10;
         this.usesContextReference = (a, b) => {
-            let _this = 3;
-            let $this = 3;
+            let _this = 3; //passes the regex for this
+            let $this = 3; //passes the regex for this
             let bb = a.num + b.num;
-            if(!this.aa){ //fails the regex for this, but not the rebinding method of testing.
+            if (!this.contextFunction) { //fails the regex for this, but not the rebinding method of testing.
                 bb = a.num + b.num;
             }
             return bb;
         }
     }
-    
+
 }
 const boundObject = new TestingContext();
-// let 
-// usesContextReference.bind(boundObject);
-// console.log(boundObject.usesContextReference())
 exports.usesContextReference = boundObject;
