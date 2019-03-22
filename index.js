@@ -1,4 +1,5 @@
 
+require('dotenv').config();
 let _ = require('lodash');
 let deepFreeze = require('deepfreeze');
 
@@ -19,20 +20,37 @@ const destroyLexicalScope = (fn) => {
     return new Function('return (' + fn.toString() + ').apply(null, arguments);');
 }
 
-const isPure = (fn, args, output) => {
+const destroyContext = (fn) => {
+    return fn.bind({});
+}
 
+const isPure = (fn, args, output) => {
     it("Verify Function Doesn't Modify Arguments", () => {
+        console.log(process.env.TESTING);
         let localArgs = args.map(_.cloneDeep);
         let testing = checkChangedArguments(fn)
         testing(...localArgs);
     });
+    it("Verify Function Doesn't Use 'this' Context", () => {
+        let localArgs = args.map(_.cloneDeep);
+        let testing = destroyContext(fn)
+        let result;
+        expect(() => {
+            result = testing(...localArgs);
+        }).not.toThrow();
+        /*  check for any uses of the this keyword. */
+        let fns = fn.toString().replace(/['"`$]/g,"issues");        
+        expect(fns.search(/([\W]){1}this\./)).toEqual(-1);
+        /*  verify output is the expected output */
+        expect(result).toEqual(output);
+    });
     it("Verify Function Doesn't Use References", () => {
         let localArgs = args.map(_.cloneDeep);
         let testing = destroyLexicalScope(fn);
-        expect(fn.toString().search(/[={} :;\r\n><]+this./)).toEqual(-1);
+        
         expect(() => {
             testing(...localArgs);
-        }).not.toThrow("is not defined");
+        }).not.toThrow();
     });
     it("Verify Function Output matches for the supplied Output for the supplied Input", () => {
         let localArgs = args.map(_.cloneDeep);

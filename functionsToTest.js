@@ -15,12 +15,17 @@ exports.usesReference = (a, b) => {
 class TestingContext {
     constructor(){
         this.contextReferenceVariable= 5;
+        this.aa = ()=>10;
         let aa = ()=>10;
         // return this.contextReferenceVariable;
         this.usesContextReference = (a, b) => {
-            let somethingthis = {};
-            somethingthis.a = 10;
-            return aa();
+            let _this = 3;
+            let $this = 3;
+            let bb = a.num + b.num;
+            if(!this.aa){ //fails the regex for this, but not the rebinding method of testing.
+                bb = a.num + b.num;
+            }
+            return bb;
         }
     }
     
